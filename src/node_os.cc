@@ -385,6 +385,43 @@ static void GetAvailableParallelism(const FunctionCallbackInfo<Value>& args) {
   args.GetReturnValue().Set(parallelism);
 }
 
+static void IsFileTrustedBySystemCodeIntegrity(const FunctionCallbackInfo<Value>& args) {
+  Environment* env = Environment::GetCurrent(args);
+  BufferValue manifestPath(env->isolate(), args[0]);
+  if (*manifestPath == NULL)
+  {
+    Local<String> v = String::NewFromUtf8(env->isolate(),
+                                         "empty manifest path").ToLocalChecked();
+    args.GetReturnValue().Set(v);
+    return;
+}
+  BufferValue signaturePath(env->isolate(), args[1]);
+  if (*signaturePath == NULL)
+  {
+    Local<String> v = String::NewFromUtf8(env->isolate(),
+                                         "empty signature file path").ToLocalChecked();
+    args.GetReturnValue().Set(v);
+    return;
+  }
+
+  int isTrusted = 0;
+
+  int returnCode = uv_is_file_trusted_by_umci(*manifestPath, *signaturePath, &isTrusted);
+  args.GetReturnValue().Set(isTrusted);
+}
+
+static void IsCIEnforcedByOS(const FunctionCallbackInfo<Value>& args) {
+  Environment* env = Environment::GetCurrent(args);
+  bool ret = uv_is_node_umci_on_by_policy();
+
+#if _DEBUG
+  r = uv_os_getenv("USERPROFILE", buffer, size);
+#endif
+
+  
+  args.GetReturnValue().Set(Boolean::New(env->isolate(), ret));
+}
+
 void Initialize(Local<Object> target,
                 Local<Value> unused,
                 Local<Context> context,
@@ -404,6 +441,8 @@ void Initialize(Local<Object> target,
   SetMethod(
       context, target, "getAvailableParallelism", GetAvailableParallelism);
   SetMethod(context, target, "getOSInformation", GetOSInformation);
+  SetMethod(context, target, "isCIEnforcedByOS", IsCIEnforcedByOS);
+  SetMethod(context, target, "isFileTrustedBySystemCodeIntegrity", IsFileTrustedBySystemCodeIntegrity);
   target
       ->Set(context,
             FIXED_ONE_BYTE_STRING(env->isolate(), "isBigEndian"),

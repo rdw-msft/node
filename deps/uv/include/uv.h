@@ -1897,6 +1897,10 @@ void uv_wtf8_to_utf16(const char* wtf8,
                       uint16_t* utf16,
                       size_t utf16_len);
 
+UV_EXTERN int uv_is_file_trusted_by_umci(char*, char*, int*);
+UV_EXTERN int uv_is_node_umci_on_by_policy();
+
+
 /* Don't export the private CPP symbols. */
 #undef UV_HANDLE_TYPE_PRIVATE
 #undef UV_REQ_TYPE_PRIVATE
