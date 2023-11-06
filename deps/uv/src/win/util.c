@@ -1730,7 +1730,7 @@ int uv_is_node_umci_on_by_policy() {
     }
   }
 
-  // WldpQuerySecurityPolicy provides backward compatibility for down to Win10
+  // WldpQuerySecurityPolicy provides backward compatibility down to Win10
   if (pWldpQuerySecurityPolicy != NULL)
   {
     DECLARE_CONST_UNICODE_STRING(providerName, L"nodejs");
