@@ -24,7 +24,6 @@
 #include "uv.h"
 #include "internal.h"
 
-
 /* Ntdll function pointers */
 sRtlGetVersion pRtlGetVersion;
 sRtlNtStatusToDosError pRtlNtStatusToDosError;
@@ -48,18 +47,12 @@ sSetWinEventHook pSetWinEventHook;
 /* ws2_32.dll function pointer */
 uv_sGetHostNameW pGetHostNameW;
 
-/* Wldp.dll function pointer */
-sWldpCanExecuteFileFromDetachedSignature pWldpCanExecuteFileFromDetachedSignature;
-sWldpGetApplicationSettingBoolean pWldpGetApplicationSettingBoolean;
-sWldpQuerySecurityPolicy pWldpQuerySecurityPolicy;
-
 void uv__winapi_init(void) {
   HMODULE ntdll_module;
   HMODULE powrprof_module;
   HMODULE user32_module;
   HMODULE kernel32_module;
   HMODULE ws2_32_module;
-  HMODULE wldp_module;
 
   ntdll_module = GetModuleHandleA("ntdll.dll");
   if (ntdll_module == NULL) {
@@ -149,17 +142,5 @@ void uv__winapi_init(void) {
     pGetHostNameW = (uv_sGetHostNameW) GetProcAddress(
         ws2_32_module,
         "GetHostNameW");
-  }
-
-  wldp_module = LoadLibraryExA("wldp.dll", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
-  if (wldp_module != NULL) {
-    pWldpCanExecuteFileFromDetachedSignature = (sWldpCanExecuteFileFromDetachedSignature)
-      GetProcAddress(wldp_module, "WldpCanExecuteFileFromDetachedSignature");
-
-    pWldpGetApplicationSettingBoolean = (sWldpGetApplicationSettingBoolean)
-      GetProcAddress(wldp_module, "WldpGetApplicationSettingBoolean");
-
-    pWldpQuerySecurityPolicy = (sWldpQuerySecurityPolicy)
-      GetProcAddress(wldp_module, "WldpQuerySecurityPolicy");
   }
 }
