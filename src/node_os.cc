@@ -404,7 +404,6 @@ void Initialize(Local<Object> target,
   SetMethod(
       context, target, "getAvailableParallelism", GetAvailableParallelism);
   SetMethod(context, target, "getOSInformation", GetOSInformation);
-
   target
       ->Set(context,
             FIXED_ONE_BYTE_STRING(env->isolate(), "isBigEndian"),

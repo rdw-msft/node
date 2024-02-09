@@ -24,6 +24,7 @@
 #include "uv.h"
 #include "internal.h"
 
+
 /* Ntdll function pointers */
 sRtlGetVersion pRtlGetVersion;
 sRtlNtStatusToDosError pRtlNtStatusToDosError;

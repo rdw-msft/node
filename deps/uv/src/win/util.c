@@ -73,6 +73,7 @@ static CRITICAL_SECTION process_title_lock;
 /* Frequency of the high-resolution clock. */
 static uint64_t hrtime_frequency_ = 0;
 
+
 /*
  * One-time initialization code for functionality defined in util.c.
  */

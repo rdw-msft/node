@@ -4765,4 +4765,5 @@ typedef int (WINAPI *uv_sGetHostNameW)
             (PWSTR,
              int);
 extern uv_sGetHostNameW pGetHostNameW;
+
 #endif /* UV_WIN_WINAPI_H_ */
